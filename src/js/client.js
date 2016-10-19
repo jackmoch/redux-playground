@@ -1,17 +1,25 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import ContactList from './components/ContactList'
+import { render } from 'react-dom'
+import { createStore, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import createLogger from 'redux-logger'
+import thunkMiddleware from 'redux-thunk'
+import App from './containers/App'
+
+const loggerMiddleware = createLogger()
+
+const store = createStore(
+	applyMiddleware(
+		thunkMiddleware,
+		loggerMiddleware	
+	)
+)
 
 const app = document.getElementById('entry')
 
-const contacts = [
-	{
-		name: 'Jack',
-		address: 'here',
-		id: 0
-	}
-]
-
-ReactDOM.render(
-	<ContactList contacts={contacts}  />,
-app)
+render(
+	<Provider store={store}>
+		<App />
+	</Provider>,
+	app
+)
